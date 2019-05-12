@@ -11,9 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.room.Room;
 
 import pl.konstelacja.boardgamescores.database.AppDatabase;
+import pl.konstelacja.boardgamescores.database.DatabaseProvider;
 import pl.konstelacja.boardgamescores.database.Game;
 
 public class AddGameActivity extends AppCompatActivity {
@@ -37,7 +37,7 @@ public class AddGameActivity extends AppCompatActivity {
 
                 if (nameText.length() > 0) {
                     Game game = new Game(nameText, gameDescription);
-                    final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "app-database").build();
+                    final AppDatabase db = DatabaseProvider.create(getApplicationContext());
                     AddGameTask addGameTask = new AddGameTask(db, new AddGameTask.ExecutionListener() {
                         @Override
                         public void onExecuted() {
