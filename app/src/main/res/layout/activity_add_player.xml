@@ -16,58 +16,58 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8pt"
-        android:layout_marginTop="8pt"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/player_name"
-        android:textSize="24dp" />
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/player_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8pt"
-        android:layout_marginRight="8pt"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:lines="1" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8pt"
-        android:layout_marginTop="8pt"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/player_surname"
-        android:textSize="24dp" />
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/player_surname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8pt"
-        android:layout_marginRight="8pt"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:lines="1" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8pt"
-        android:layout_marginTop="8pt"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/nickname"
-        android:textSize="24dp" />
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/player_nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8pt"
-        android:layout_marginRight="8pt"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:lines="1" />
 
     <Button
         android:id="@+id/submit_player"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8pt"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:background="@color/colorAccent"
         android:text="@string/submit" />
-
 
 </LinearLayout>

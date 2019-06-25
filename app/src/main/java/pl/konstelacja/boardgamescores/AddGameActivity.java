@@ -25,7 +25,7 @@ public class AddGameActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
-        final EditText name = findViewById(R.id.game_of_name);
+        final EditText name = findViewById(R.id.name_of_game);
         final EditText description = findViewById(R.id.game_description);
         Button submit = findViewById(R.id.game_submit);
 
