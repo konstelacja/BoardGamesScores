@@ -11,4 +11,6 @@
     <string name="player_name">Name</string>
     <string name="player_surname">Surname</string>
     <string name="nickname">Nickname</string>
+    <string name="error_in_input_game">Attention</string>
+    <string name="error_in_input_player">Attention</string>
 </resources>

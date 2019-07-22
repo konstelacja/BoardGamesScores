@@ -1,9 +1,22 @@
-package pl.konstelacja.boardgamescores;
+package pl.konstelacja.boardgamescores.database;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Player {
 
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
+    @ColumnInfo
     private String name;
+
+    @ColumnInfo
     private String surname;
+
+    @ColumnInfo
     private String nickName;
 
     public Player(String name, String surname, String nickName) {

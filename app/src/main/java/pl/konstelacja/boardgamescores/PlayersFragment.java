@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,10 +16,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import pl.konstelacja.boardgamescores.database.AppDatabase;
+import pl.konstelacja.boardgamescores.database.DatabaseProvider;
+import pl.konstelacja.boardgamescores.database.Player;
+import pl.konstelacja.boardgamescores.database.PlayerDao;
+
 public class PlayersFragment extends Fragment {
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Nullable
     @Override
@@ -27,7 +39,7 @@ public class PlayersFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.go);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -38,28 +50,39 @@ public class PlayersFragment extends Fragment {
             }
         });
 
-        List<Player> players = new ArrayList<>();
-        players.add(new Player("Anna", "Krzysztof", "Bombelek"));
-        players.add(new Player("Jakub", "Kowalski", "Bibuś"));
-        players.add(new Player("Jan", "Nowak", "Jasiek"));
-        players.add(new Player("Marcin", "Stępień", "Marcin"));
-        players.add(new Player("Paweł", "Stępień", "Pawcio"));
-        players.add(new Player("Michał", "Pawelec", "Młody"));
-        players.add(new Player("Maria", "Klimek", "Mery"));
-        players.add(new Player("Albert", "Nowak", "Alberto"));
-        players.add(new Player("Klara", "Kowalczyk", "Klarcia"));
-        players.add(new Player("Kajetan", "Kowal", "Kajtek"));
+        AppDatabase appDatabase = DatabaseProvider.create(getContext().getApplicationContext());
+        PlayerDao playerDao = appDatabase.playerDao();
 
-        PlayersAdapter playersAdapter = new PlayersAdapter(players);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        final Disposable disposable = playerDao.getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Player>>() {
+                               @Override
+                               public void accept(List<Player> players) {
+                                   PlayersAdapter playersAdapter = new PlayersAdapter(players, new PlayersRecyclerViewClickListener() {
+                                       @Override
+                                       public void onClick(Player player) {
+                                           Toast.makeText(getContext(), "Kliknąłeś " + player.getNickName(),Toast.LENGTH_SHORT).show();
+                                       }
+                                   });
+                                   LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.players_list);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(playersAdapter);
+                                   RecyclerView recyclerView = view.findViewById(R.id.players_list);
+                                   recyclerView.setLayoutManager(layoutManager);
+                                   recyclerView.setAdapter(playersAdapter);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                layoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+                                   DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                                           layoutManager.getOrientation());
+                                   recyclerView.addItemDecoration(dividerItemDecoration);
+                               }
+                        });
+        compositeDisposable.add(disposable);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        compositeDisposable.clear();
+    }
 }
+

@@ -14,24 +14,25 @@ import pl.konstelacja.boardgamescores.database.Game;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
 
+    private RecyclerViewClickListener listener;
     private List<Game> games;
 
-    public GamesAdapter(List<Game> list) {
+    public GamesAdapter(List<Game> list, RecyclerViewClickListener listener) {
         this.games = list;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.games_item_row, parent, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, listener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Game game = games.get(position);
-        holder.name.setText(game.getName());
-        holder.description.setText(game.getDescription());
+        holder.bind(game);
     }
 
     @Override
@@ -39,14 +40,32 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         return games.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView name;
-        public TextView description;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public ViewHolder(View view) {
+        private TextView name;
+        private TextView description;
+
+        private Game game;
+        private RecyclerViewClickListener listener;
+
+        ViewHolder(View view, RecyclerViewClickListener listener) {
             super(view);
             name = view.findViewById(R.id.name_of_game);
             description = view.findViewById(R.id.game_description);
+            this.listener = listener;
+
+            view.setOnClickListener(this);
+        }
+
+        void bind(Game game) {
+            this.game = game;
+            name.setText(game.getName());
+            description.setText(game.getDescription());
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.onClick(game);
         }
     }
 }

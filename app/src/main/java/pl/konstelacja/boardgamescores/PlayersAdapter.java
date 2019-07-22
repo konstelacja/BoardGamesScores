@@ -10,27 +10,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import pl.konstelacja.boardgamescores.database.Player;
+
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHolder> {
 
     private List<Player> players;
+    private PlayersRecyclerViewClickListener listener;
 
-    public PlayersAdapter(List<Player> list) {
+    public PlayersAdapter(List<Player> list, PlayersRecyclerViewClickListener listener) {
         this.players = list;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.players_item_row, parent, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, listener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Player player = players.get(position);
-        holder.name.setText(player.getName());
-        holder.surname.setText(player.getSurname());
-        holder.nickname.setText(player.getNickName());
+        holder.bind(player);
     }
 
     @Override
@@ -38,18 +40,34 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         return players.size();
     }
 
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        private TextView name;
+        private TextView surname;
+        private TextView nickname;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView name;
-        public TextView surname;
-        public TextView nickname;
+        private Player player;
+        private PlayersRecyclerViewClickListener listener;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view, PlayersRecyclerViewClickListener listener) {
             super(view);
             name = view.findViewById(R.id.player_name);
             surname = view.findViewById(R.id.player_surname);
             nickname = view.findViewById(R.id.player_nickname);
+            this.listener = listener;
+
+            view.setOnClickListener(this);
         }
 
+        void bind(Player player){
+            this.player = player;
+            name.setText(player.getName());
+            surname.setText(player.getSurname());
+            nickname.setText(player.getNickName());
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.onClick(player);
+        }
     }
 }

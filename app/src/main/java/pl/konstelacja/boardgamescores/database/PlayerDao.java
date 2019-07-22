@@ -10,11 +10,12 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 
 @Dao
-public interface GameDao {
+public interface PlayerDao {
 
-    @Query("SELECT * FROM game")
-    Single<List<Game>> getAll();
+    @Query("SELECT * FROM player")
+    Single<List<Player>> getAll();
 
     @Insert
-    Completable insert(Game game);
+    Completable insert(Player player);
 }
+

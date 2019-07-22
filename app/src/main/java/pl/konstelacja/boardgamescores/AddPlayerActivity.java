@@ -11,7 +11,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.schedulers.Schedulers;
+import pl.konstelacja.boardgamescores.database.DatabaseProvider;
+import pl.konstelacja.boardgamescores.database.Player;
+
 public class AddPlayerActivity extends AppCompatActivity {
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,17 +41,35 @@ public class AddPlayerActivity extends AppCompatActivity {
                 String nicknamePlayer = nickname.getText().toString();
 
                 if (namePlayer.length() > 0 && surnamePlayer.length() > 0) {
-                    Player player = new Player(namePlayer,surnamePlayer,nicknamePlayer);
-                    finish();
-                }else {
-                    Context context = getApplicationContext();
-                    CharSequence text = "Please input name and surname...";
-                    int duration = Toast.LENGTH_SHORT;
+                    Player player = new Player(namePlayer, surnamePlayer, nicknamePlayer);
 
-                    Toast toast = Toast.makeText(context, text, duration);
+                    Disposable disposable = DatabaseProvider.create(getApplicationContext())
+                            .playerDao()
+                            .insert(player)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Action() {
+                                @Override
+                                public void run() throws Exception {
+                                    finish();
+                                }
+                            });
+
+                    compositeDisposable.add(disposable);
+                } else {
+                    Context context = getApplicationContext();
+
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, R.string.error_in_input_player, duration);
                     toast.show();
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }
