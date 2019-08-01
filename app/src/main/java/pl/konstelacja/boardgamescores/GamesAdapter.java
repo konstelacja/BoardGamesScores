@@ -43,7 +43,6 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView name;
-        private TextView description;
 
         private Game game;
         private RecyclerViewClickListener listener;
@@ -51,7 +50,6 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         ViewHolder(View view, RecyclerViewClickListener listener) {
             super(view);
             name = view.findViewById(R.id.name_of_game);
-            description = view.findViewById(R.id.game_description);
             this.listener = listener;
 
             view.setOnClickListener(this);
@@ -60,7 +58,6 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         void bind(Game game) {
             this.game = game;
             name.setText(game.getName());
-            description.setText(game.getDescription());
         }
 
         @Override

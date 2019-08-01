@@ -15,6 +15,9 @@ public interface GameDao {
     @Query("SELECT * FROM game")
     Single<List<Game>> getAll();
 
+    @Query("SELECT * FROM game WHERE id = :gameId")
+    Single<Game> getGameById(int gameId);
+
     @Insert
     Completable insert(Game game);
 }
