@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,7 +61,8 @@ public class PlayersFragment extends Fragment {
                                    PlayersAdapter playersAdapter = new PlayersAdapter(players, new PlayersRecyclerViewClickListener() {
                                        @Override
                                        public void onClick(Player player) {
-                                           Toast.makeText(getContext(), "Kliknąłeś " + player.getNickName(),Toast.LENGTH_SHORT).show();
+                                           Intent intent = DetailPlayerActivity.createIntent(getContext(), player);
+                                           startActivity(intent);
                                        }
                                    });
                                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);

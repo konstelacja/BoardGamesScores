@@ -21,6 +21,7 @@
         <activity android:name=".AddGameActivity"/>
         <activity android:name=".AddPlayerActivity"/>
         <activity android:name=".DetailGameActivity" />
+        <activity android:name=".DetailPlayerActivity" />
     </application>
 
 </manifest>

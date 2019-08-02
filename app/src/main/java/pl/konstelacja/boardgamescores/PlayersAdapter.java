@@ -41,8 +41,6 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView name;
-        private TextView surname;
         private TextView nickname;
 
         private Player player;
@@ -50,8 +48,6 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
 
         public ViewHolder(View view, PlayersRecyclerViewClickListener listener) {
             super(view);
-            name = view.findViewById(R.id.player_name);
-            surname = view.findViewById(R.id.player_surname);
             nickname = view.findViewById(R.id.player_nickname);
             this.listener = listener;
 
@@ -60,9 +56,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
 
         void bind(Player player){
             this.player = player;
-            name.setText(player.getName());
-            surname.setText(player.getSurname());
-            nickname.setText(player.getNickName());
+            nickname.setText(player.getNickname());
         }
 
         @Override

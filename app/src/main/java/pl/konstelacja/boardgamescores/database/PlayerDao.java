@@ -15,6 +15,9 @@ public interface PlayerDao {
     @Query("SELECT * FROM player")
     Single<List<Player>> getAll();
 
+    @Query("SELECT * FROM player WHERE id = :playerId")
+    Single<Player> getPlayerById(int playerId);
+
     @Insert
     Completable insert(Player player);
 }

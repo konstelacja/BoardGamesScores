@@ -17,12 +17,12 @@ public class Player {
     private String surname;
 
     @ColumnInfo
-    private String nickName;
+    private String nickname;
 
-    public Player(String name, String surname, String nickName) {
+    public Player(String name, String surname, String nickname) {
         this.name = name;
         this.surname = surname;
-        this.nickName = nickName;
+        this.nickname = nickname;
     }
 
     public String getName() {
@@ -33,7 +33,7 @@ public class Player {
         return surname;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 }
